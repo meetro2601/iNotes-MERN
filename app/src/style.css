@@ -1,0 +1,29 @@
+body{
+    background: linear-gradient(60deg,rgb(247, 255, 218),#cfe7ef,rgb(247, 255, 218));
+    height: 100vh;
+    color: black;
+}
+input{
+    font-size: 15px !important;
+}
+.header{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    background: linear-gradient(45deg,rgb(56, 255, 222),rgb(232, 178, 253),rgb(253, 242, 143),rgb(123, 255, 106));
+    box-shadow: 1px 0px 5px 1px;
+}
+.addBtn{
+    font-size: 14px;
+    font-weight: 600;
+    background-color:rgb(132, 123, 136) !important;
+    color: white !important;
+}
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
