@@ -88,7 +88,7 @@ router.post(
                         html: `<p>Welcome <b>${user.name},</b></p>
                 <p>Thanks for registering with iNotes.</p>
                 <p>Please confirm your email address by simply clicking on the below link</p>
-                <a style='text-decoration: none;' href='${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;font-size:32px">Verify Email</p></a>
+                <a style='text-decoration: none;' href='${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;font-size:24px">Verify Email</p></a>
                 `,
                       };
                       Transporter.sendMail(mailOptions, (error, response) => {
@@ -185,7 +185,7 @@ router.post("/verify-email", verifyToken, (req, res) => {
 
 router.get("/resend-verification-email", (req, res) => {
   if (req.query?.userId) {
-    Users.findOne({ _id: req.query.userId, verified: false }, (err, user) => {
+    Users.findOne({ _id: req.query.userId}, (err, user) => {
       if (err) {
         return res
           .status(400)
@@ -194,7 +194,13 @@ router.get("/resend-verification-email", (req, res) => {
         if (!user) {
           return res
             .status(400)
-            .json({ error: "Unable to send verification Email" });
+            .json({ error: "User not found" });
+        }
+
+        if(user.verified){
+          return res
+          .status(200)
+          .json({message: "Email is already verified" })
         }
         /* Generating random token */
         const token = Crypto.randomBytes(24).toString("hex");
@@ -218,19 +224,19 @@ router.get("/resend-verification-email", (req, res) => {
                     .status(500)
                     .json({ error: "Unable to send verification Email" });
                 }
-                console.log(
-                  `${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}`
-                );
-                return res.status(200).json({ message: "Email Sent" });
+                // console.log(
+                //   `${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}`
+                // );
+                // return res.status(200).json({ message: "Email Sent" });
                 /* ReSending verification Email */
-                /* const mailOptions = {
+                const mailOptions = {
             from: "meetbr26@gmail.com",
             to: `${user.email}`,
             subject: "iNotes - Verify your Email",
             html: `<p>Welcome <b>${user.name},</b></p>
       <p>Thanks for registering with iNotes.</p>
       <p>Please confirm your email address by simply clicking on the below link</p>
-      <a href='${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;text-decoration:none">Verify Email</p></a>
+      <a style='text-decoration: none;' href='${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;font-size:24px">Verify Email</p></a>
       `,
     };
           Transporter.sendMail(mailOptions, (error, response) => {
@@ -240,7 +246,7 @@ router.get("/resend-verification-email", (req, res) => {
               // console.log(response);
               res.status(200).json({ message: "Email Sent" });
             }
-          }); */
+          });
               })
               .catch((error) => {
                 return res

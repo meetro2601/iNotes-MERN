@@ -81,7 +81,7 @@ function EmailVerified() {
   return (
     <MDBContainer className="col-md-6 col-lg-4 col-8 py-5 text-dark text-center my-5">
       <MDBIcon size='10x' style={{color:"green"}} icon="thumbs-up"></MDBIcon>
-      <h4 className="my-5">Email Verified Successfully !</h4>
+      <h5 className="my-5">Email Verified Successfully !</h5>
       <Link to="/auth/login">
         <MDBBtn size="lg" className="fw-bold" color="light">
           Login
