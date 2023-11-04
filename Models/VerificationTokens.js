@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
+import { Schema, model } from 'mongoose'
 
-const verificationTokenSchema = new mongoose.Schema({
+const verificationTokenSchema = new Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref:'user',
         required:true
     },
@@ -18,4 +18,4 @@ const verificationTokenSchema = new mongoose.Schema({
 })
 
 
-module.exports = mongoose.model('verificationtokens',verificationTokenSchema)
+export default model('verificationtokens',verificationTokenSchema)

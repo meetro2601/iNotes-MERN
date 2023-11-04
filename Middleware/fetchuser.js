@@ -1,12 +1,11 @@
-require('dotenv').config()
-const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET
-
+import 'dotenv/config'
+import pkg from 'jsonwebtoken';
+const { verify } = pkg;
 
 const fetchUser = (req, res, next) => {
-  // console.log(req.cookies)
+  const JWT_SECRET = process.env.JWT_SECRET
   const token = req.cookies.iNotes_jwt || req.cookies.iNotes_google
-      jwt.verify(token, JWT_SECRET,(err,data)=>{
+  verify(token, JWT_SECRET,(err,data)=>{
         if(err){
           return res.send({error:"Invalid Token"})
         }
@@ -15,4 +14,4 @@ const fetchUser = (req, res, next) => {
   next();
 }; 
 
-module.exports = fetchUser;
+export default fetchUser;

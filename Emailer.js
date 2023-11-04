@@ -1,13 +1,13 @@
-require('dotenv').config()
-const nodemailer = require("nodemailer")
+import "dotenv/config"
+import { createTransport } from "nodemailer"
 
-const transporter = nodemailer.createTransport({
+const transporter = createTransport({
     service:"gmail",
     auth:{
         user:process.env.AUTH_USER,
-        pass:process.env.AUTH_PASSWORD
+        pass:process.env.AUTH_PASSWORD //google account less secure app password
     }
 })
 
 
-module.exports = transporter
+export default transporter

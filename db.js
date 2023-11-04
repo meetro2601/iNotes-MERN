@@ -1,11 +1,11 @@
-require('dotenv').config()
-const mongoose = require('mongoose')
+import 'dotenv/config'
+import { connect } from 'mongoose'
 
 const connectToMongo = ()=>{
-        mongoose.connect(process.env.MONGO_ATLAS_URI)
+        connect(process.env.MONGO_ATLAS_URI)
         .then(()=>console.log('Connected'))
         .catch((error)=>console.log(error))
 }
 
 
-module.exports = connectToMongo
+export default connectToMongo

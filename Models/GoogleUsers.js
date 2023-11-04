@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+import { Schema, model } from "mongoose"
 
-const googleUserSchema = new mongoose.Schema({
+const googleUserSchema = new Schema({
     name:{
         type:String,
         required:true
@@ -15,4 +15,4 @@ const googleUserSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('googleUsers',googleUserSchema)
+export default model('googleUsers',googleUserSchema)

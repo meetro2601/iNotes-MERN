@@ -1,27 +1,37 @@
 //Importing all the modules
-require('dotenv').config()
-const express = require('express')
-const cors = require('cors')
-const path = require('path')
-const cookieParser = require('cookie-parser')
+import 'dotenv/config'
+import express, { json } from 'express'
+import cors from 'cors'
+import { join } from 'path'
+import cookieParser from 'cookie-parser'
+import auth from "./Routes/Auth.js"
+import googleAuth from "./Routes/GoogleAuth.js"
+import notes from "./Routes/Notes.js"
+import password from "./Routes/Password.js"
+import * as url from 'url';
 
-const connectToMongo = require('./db')
+import connectToMongo from './db.js'
 connectToMongo()
 
 //initializing app 
 const app = express()
-app.use(express.json())
+app.use(json())
 app.use(cors())
 app.use(cookieParser())
-app.use('/auth', require('./Routes/Auth'))
-app.use('/auth',require('./Routes/GoogleAuth'))
-app.use('/notes',require('./Routes/Notes'))
-app.use('/password',require('./Routes/Password'))
+app.use('/auth', auth)
+app.use('/auth',googleAuth)
+app.use('/notes',notes)
+app.use('/password',password)
+
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 if(process.env.NODE_ENV == 'production'){
-    app.use(express.static(path.join(__dirname,'app','build')))
+    app.use(express.static(join(__dirname,'app','build')))
     app.get('*',(req,res)=>{
-        res.sendFile(path.join(__dirname,'app','build','index.html'))
+        res.sendFile(join(__dirname,'app','build','index.html'),(err)=>{
+            res.status(500).send(err)
+        })
     })
 }
 

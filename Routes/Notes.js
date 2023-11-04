@@ -1,39 +1,38 @@
-const express = require("express");
-const { body, validationResult } = require("express-validator");
-const fetchUser = require("../Middleware/fetchuser");
-const UserNotes = require("../Models/UserNotes");
-const router = express.Router();
+import { Router } from "express";
+import { body, validationResult } from "express-validator";
+import fetchUser from "../Middleware/fetchuser.js";
+import notes from "../Models/UserNotes.js";
+const router = Router();
 
 
 /* ========================================================================== */
 /* ====== Geting all notes of user (Login required) @ /getallnotes ===== */
 /* ========================================================================== */
 
-router.get("/getallnotes", fetchUser, (req, res) => {
-  if(req.user){
-    UserNotes.find({ user: req.user._id }, (err, result) => {
-      res.send({result,user:req.user});
-    });
-  }
+router.get("/getallnotes", fetchUser, async (req, res) => {
+  if (req.user) {
+    const result = await notes.find({ user: req.user._id })
+    res.send({ result: result, user: req.user });
+  } 
 });
 
 /* ======================================================== */
-/* ======= Adding notes (Login required) @ /addNote ======= */ 
+/* ======= Adding notes (Login required) @ /addNote ======= */
 /* ======================================================== */
 
 router.post(
   "/addNote",
   // validating user input for note with express-validator
   [
-    body("title", "Title must be alteat 4 characters long" 
+    body("title", "Title must be alteat 4 characters long"
     ).isLength({ min: 4 }),
-    body(
-      "description",
-      "Description must be alteat 10 characters long"
-    ).isLength({ min: 10 }),
+    // body(
+    //   "description",
+    //   "Description must be alteat 10 characters long"
+    // ).isLength({ min: 10 }),
   ],
   fetchUser,
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -41,16 +40,16 @@ router.post(
 
     // adding a note to mongodb usernotes collection if no validation error exists
 
-    UserNotes.create({
+    const note = await notes.create({
       user: req.user._id,
       title: req.body.title,
       description: req.body.description
     })
-      .then((note) => {
-        res.json({ note });
-      })
-      //catching error
-      .catch((err) => res.status(400).json({ error: "Failed to add a note" }));
+    if (note) {
+      res.json({ note });
+    } else {
+      res.status(400).json({ error: "Failed to add a note" });
+    }
   }
 );
 
@@ -58,9 +57,12 @@ router.post(
 /* ======= Updating a note (Login required) @ /updateNote ======= */
 /* =========================================================== */
 
-router.put("/updateNote/:id", fetchUser, (req, res) => {
-  // finding a note to be updated by id
-  UserNotes.findById(req.params.id, (err, result) => {
+router.put("/updateNote/:id", fetchUser, async (req, res) => {
+  try {
+
+    // finding a note to be updated by id
+    const result = await notes.findById(req.params.id).exec()
+
     // if note not found
     if (!result) {
       return res.status(404).send("Not Found");
@@ -72,27 +74,28 @@ router.put("/updateNote/:id", fetchUser, (req, res) => {
     }
 
     // Updating a note
-    UserNotes.findByIdAndUpdate(
+    const newResult = await notes.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true },
-      (err, result) => {
-        if (err) {
-          return res.status(500).send("Error Occurred");
-        }
-        res.send(result);
-      }
-    );
-  });
+      { new: true }).exec()
+
+    res.send(newResult);
+
+  } catch (error) {
+    return res.status(500).send("Error Occurred");
+  }
 });
 
 /* =========================================================== */
 /* ======= Deleting a note (Login required) @ /deleteNote ======= */
 /* =========================================================== */
 
-router.delete("/deleteNote/:id", fetchUser, (req, res) => {
-  // finding a note to be deleted by id
-  UserNotes.findById(req.params.id, (err, result) => {
+router.delete("/deleteNote/:id", fetchUser, async (req, res) => {
+  try {
+
+    // finding a note to be deleted by id
+    const result = await notes.findById(req.params.id)
+
     // if note not found
     if (!result) {
       return res.status(404).send("Not Found");
@@ -104,10 +107,13 @@ router.delete("/deleteNote/:id", fetchUser, (req, res) => {
     }
 
     // Deleting a note
-    UserNotes.findByIdAndDelete(req.params.id, (err, result) => {
-      res.json({ success: "Deleted Successfully", result });
-    });
-  });
+    const deleted = await notes.findByIdAndDelete(req.params.id)
+    res.json({ success: "Deleted Successfully", deleted })
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send("Error Occurred");
+  }
 });
 
-module.exports = router;
+export default router;

@@ -1,24 +1,25 @@
-require("dotenv").config();
-const bcrypt = require("bcryptjs");
-const VerificationTokens = require("../Models/VerificationTokens");
+import 'dotenv/config'
+import pkg from 'bcryptjs';
+import vTokens from "../Models/VerificationTokens.js";
 
-const verifyToken = (req, res, next) => {
-  
-  VerificationTokens.findOne({ userId: req.query.userId })
-    .then((result) => {
-      if (!result) {
+const { compare } = pkg;
+const verifyToken = async (req, res, next) => {
+  try {
+    const result = await vTokens.findOne({ userId: req.query.userId })
+    if (!result) {
+      return res.status(403).json({ valid: false });
+    }
+
+    compare(req.query.token, result.token).then((val) => {
+      if (val == false) {
         return res.status(403).json({ valid: false });
       }
-
-      bcrypt.compare(req.query.token, result.token).then((val) => {
-        if (val == false) {
-          return res.status(403).json({ valid: false });
-        }
-         req.user = result.userId.toString()
-         next();
-      });
-    })
-    .catch((err) => console.log(err));
+      req.user = result.userId.toString()
+      next();
+    });
+  } catch (error) {
+    console.log(error)
+  }
 };
 
-module.exports = verifyToken;
+export default verifyToken;
