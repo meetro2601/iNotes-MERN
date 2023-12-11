@@ -26,7 +26,7 @@ router.post("/google-login", (req, res) => {
           if (err) {
             return res.status(403).send("Token generation error");
           }
-          res.cookie('iNotes_google', token, { httpOnly: true })
+          res.cookie('iNotes_google', token,)
           res.json({ token, user });
         });
       } else {
@@ -40,7 +40,7 @@ router.post("/google-login", (req, res) => {
             if (err) {
               return res.status(403).send("Token generation error");
             }
-            res.cookie('iNotes_google', token, { httpOnly: true })
+            res.cookie('iNotes_google', token)
             res.json({ token, user });
           })
         }
