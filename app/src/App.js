@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Signup from "./Components/Signup";
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 import Login from "./Components/Login";
@@ -11,12 +11,8 @@ import PageError from "./Components/PageError";
 export const UserContext = React.createContext()
 
 function App() {
-
-  const [user, setuser] = useState('')
-  const [loggedIn, setloggedIn] = useState(false)
   
   return (
-    <UserContext.Provider value={{user,setuser,loggedIn,setloggedIn}}>
     <Router>
       <Routes>
         <Route path='/' element={ <Home/>}></Route>
@@ -28,8 +24,6 @@ function App() {
         <Route path='*' element={<PageError/>}></Route>
       </Routes>
     </Router>
-
-    </UserContext.Provider>
   );
 }
 

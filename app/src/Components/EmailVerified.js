@@ -65,7 +65,7 @@ function EmailVerified() {
           style={{ backgroundColor: "#4f4f4fe3" }}
           className="shadow rounded-3 p-3 my-5"
         >
-          <h5>Your verification link is invalid / has expired</h5>
+          <h5>This Email verification link is invalid / has expired</h5>
           <p className="mb-0">
             Please click on the "Resend Email" button to request a new email
             verification link

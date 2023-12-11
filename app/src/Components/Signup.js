@@ -1,15 +1,17 @@
-import { MDBBtn, MDBContainer, MDBIcon, MDBInput } from "mdb-react-ui-kit";
+import { MDBBtn, MDBContainer, MDBIcon, MDBInput, MDBSpinner } from "mdb-react-ui-kit";
 import React, { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { signUp } from "../redux/userSlice";
 
 function Signup() {
-  
+
   const [formDetail, setformDetail] = useState({
     name: "",
     email: "",
     password: "",
   });
   const [emailSent, setemailSent] = useState(false);
+  const [loading, setloading] = useState();
 
   const [signupErr, setsignupErr] = useState({
     nameErr: false,
@@ -43,7 +45,7 @@ function Signup() {
     }
   };
 
-  const submitHandle = (e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
 
     if (!formDetail.name && !formDetail.email && !formDetail.password) {
@@ -58,50 +60,44 @@ function Signup() {
       setsignupErr({ ...signupErr, passwordErr: true });
       setsignupErrMsg({ ...signupErrMsg, passwordErrMsg: "Password Required" });
     } else {
-      fetch("/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formDetail),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data)
-          if (data.errors) {
-            let mailError = data.errors.find(
-              (error) => error.param === "email"
-            );
-            let pswrdError = data.errors.find(
-              (error) => error.param === "password"
-            );
+      setloading(true)
+      const data = await signUp(formDetail)
+      // console.log(data)
+      if (data.errors) {
+        let mailError = data.errors.find(
+          (error) => error.path === "email"
+        );
+        let pswrdError = data.errors.find(
+          (error) => error.path === "password"
+        );
 
-            if (mailError && pswrdError) {
-              setsignupErr({ ...signupErr, emailErr: true, passwordErr: true });
-              setsignupErrMsg({
-                ...signupErrMsg,
-                emailErrMsg: mailError.msg,
-                passwordErrMsg: pswrdError.msg,
-              });
-            } else if (mailError) {
-              setsignupErr({ ...signupErr, emailErr: true });
-              setsignupErrMsg({
-                ...signupErrMsg,
-                emailErrMsg: mailError.msg,
-              });
-            } else if (pswrdError) {
-              setsignupErr({ ...signupErr, passwordErr: true });
-              setsignupErrMsg({
-                ...signupErrMsg,
-                passwordErrMsg: pswrdError.msg,
-              });
-            }
-          } else if (data.error) {
-            alert(data.error);
-          } else {
-            setemailSent(true);
-          }
-        });
+        if (mailError && pswrdError) {
+          setsignupErr({ ...signupErr, emailErr: true, passwordErr: true });
+          setsignupErrMsg({
+            ...signupErrMsg,
+            emailErrMsg: mailError.msg,
+            passwordErrMsg: pswrdError.msg,
+          });
+        } else if (mailError) {
+          setsignupErr({ ...signupErr, emailErr: true });
+          setsignupErrMsg({
+            ...signupErrMsg,
+            emailErrMsg: mailError.msg,
+          });
+        } else if (pswrdError) {
+          setsignupErr({ ...signupErr, passwordErr: true });
+          setsignupErrMsg({
+            ...signupErrMsg,
+            passwordErrMsg: pswrdError.msg,
+          });          
+        }
+      } else if (data.error) {
+        alert(data.error);
+      } else {
+        setemailSent(true);
+      }
+      setloading(false)
+      
     }
   };
 
@@ -112,7 +108,7 @@ function Signup() {
           <h5 className="fw-bold">
             <MDBIcon className="me-2" icon='check-circle'></MDBIcon>
             Verify your Email
-            </h5>
+          </h5>
           <hr />
           <p className="mb-0">
             We have just sent an email to <b><i>{formDetail.email}</i></b> to verify your
@@ -120,7 +116,7 @@ function Signup() {
           </p>
         </MDBContainer>
       ) : (
-        
+
         <MDBContainer className="col-md-6 col-lg-5 col-xl-4 col-10 p-4 bg-light shadow rounded-3 text-center border my-5">
           <h1 className="py-3">SignUp</h1>
           <form className="" action="/api/auth" method="post">
@@ -159,7 +155,12 @@ function Signup() {
               <p className="py-1 text-danger">{signupErrMsg.passwordErrMsg}</p>
             ) : null}
             <MDBBtn onClick={submitHandle} className="mt-5 mb-4 w-100 fw-bold">
-              Register
+              {
+                loading ? 
+                  <MDBSpinner style={{ width: "16px", height: "16px" }} role='status' tag='span' />
+                 :
+                  <span>Register</span>
+              }
             </MDBBtn>
           </form>
           <p className="text-muted">Already have an Account?<Link to="/auth/login" className=""> SignIn

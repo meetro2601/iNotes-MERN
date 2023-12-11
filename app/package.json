@@ -1,19 +1,21 @@
 {
-  "name": "my-fullstack-app",
+  "name": "iNotes-fullstack-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:2601",
+  "proxy": "http://localhost:2601/",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.15.0",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "mdb-react-ui-kit": "^2.2.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-google-login": "^5.2.2",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
+    "@react-oauth/google": "^0.12.1",
+    "@reduxjs/toolkit": "^1.9.7",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.5.1",
+    "mdb-react-ui-kit": "^6.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.3",
+    "react-router-dom": "^6.17.0",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^3.5.0"
   },
   "scripts": {
     "start": "react-scripts start",

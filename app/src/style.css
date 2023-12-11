@@ -20,6 +20,28 @@ input{
     color: white !important;
 }
 
+.cardHover {
+    height: 50px;
+    box-shadow: none;
+    /* transform: scale(1.015); */
+    .actions{
+        display:none;
+    }
+}
+
+.cardHover:hover{
+    box-shadow: 2px 2px 4px rgb(52, 52, 52);
+    .actions{
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+
+    .date{
+        display: none;
+    }
+}
+
 .divider:after,
 .divider:before {
 content: "";

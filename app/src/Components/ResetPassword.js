@@ -28,7 +28,7 @@ function ResetPassword() {
       .then((data) => {
         setloading(false)
         if (!data.valid) {
-          settokenErr("is Invalid / has Expired");
+          settokenErr("is alreay used / has expired");
         }
       })
       .catch((err) => console.log(err));

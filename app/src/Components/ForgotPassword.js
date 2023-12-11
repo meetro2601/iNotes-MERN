@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { MDBBtn, MDBContainer, MDBInput } from "mdb-react-ui-kit";
+import { MDBBtn, MDBContainer, MDBInput, MDBSpinner } from "mdb-react-ui-kit";
 
 function ForgotPassword() {
   const [email, setemail] = useState("");
   const [error, seterror] = useState('');
+  const [loading, setloading] = useState();
+
 
   const onChangeHandler = (e) => {
     setemail(e.target.value);
@@ -19,16 +21,17 @@ function ForgotPassword() {
     if (!email) {
       seterror("Email Id Required");
     } else {
+      setloading(true)
       fetch("/password/forgot-Password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email}),
+        body: JSON.stringify({ email }),
       })
         .then((res) => res.json())
         .then((data) => {
-          if(data.validationError){
+          if (data.validationError) {
             seterror(data.validationError)
           }
           else if (data.error) {
@@ -36,6 +39,7 @@ function ForgotPassword() {
           } else {
             alert(data.message);
           }
+          setloading(false)
         });
     }
   };
@@ -57,10 +61,15 @@ function ForgotPassword() {
       <MDBBtn
         onClick={sendMailHandle}
         size="md"
-        className="mt-4 fw-bold"
+        className="mt-4 w-25 fw-bold"
         color="dark"
       >
-        Send Email
+        {
+          loading ?
+            <MDBSpinner grow style={{ width: "12px", height: "12px" }} role='status' tag='span' />
+            :
+            <span>Send</span>
+        }
       </MDBBtn>
     </MDBContainer>
   );
