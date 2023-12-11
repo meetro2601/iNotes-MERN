@@ -16,7 +16,8 @@ connectToMongo()
 //initializing app 
 const app = express()
 app.use(json())
-app.use(cors({ origin: ['https://genuine-mousse-507905.netlify.app/', 'http://localhost:3000/'] }))
+app.use(cors({ 
+    origin: ['https://genuine-mousse-507905.netlify.app', 'http://localhost:3000'] }))
 app.use(cookieParser())
 app.use('/auth', auth)
 app.use('/auth',googleAuth)
