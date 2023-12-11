@@ -2,7 +2,7 @@
 import 'dotenv/config'
 import express, { json } from 'express'
 import cors from 'cors'
-import { join } from 'path'
+import { join, resolve } from 'path'
 import cookieParser from 'cookie-parser'
 import auth from "./Routes/Auth.js"
 import googleAuth from "./Routes/GoogleAuth.js"
@@ -24,7 +24,8 @@ app.use('/notes',notes)
 app.use('/password',password)
 
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+// const __dirname = url.fileURLToPath(new URL('.', import.meta.url)); OR
+const __dirname = resolve()
 
 if(process.env.NODE_ENV == 'production'){
     app.use(express.static(join(__dirname,'app','build')))

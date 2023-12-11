@@ -48,7 +48,9 @@ router.post("/google-login", (req, res) => {
       }
 
     })
-    .catch(err => res.status(403).send("Google sign in error"));
+    .catch(err => {
+      console.log(err)
+      return res.status(403).send("Google sign in error")});
 });
 
 export default router

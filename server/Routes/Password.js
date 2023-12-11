@@ -109,12 +109,14 @@ router.put(
           { _id: req.user },
           { $set: { password: hash } }
         )
+        await vtokens.findOneAndDelete({userId:req.user})
 
         if (result.modifiedCount !== 0) {
           return res
             .status(200)
             .json({ message: "Password updated successfully" });
         }
+
       }
     } catch (error) {
       return res

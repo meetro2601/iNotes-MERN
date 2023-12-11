@@ -145,6 +145,7 @@ router.post("/verify-email", verifyToken, async (req, res) => {
     const result = await users.findOneAndUpdate({ _id: req.user }, { $set: { verified: true } })
 
     if (result) {
+      await vtokens.findOneAndDelete({userId:req.user})
       return res.status(200).send("Verified Successfully");
     } else {
       res.status(400).send("Unable to verify");
@@ -159,6 +160,8 @@ router.post("/verify-email", verifyToken, async (req, res) => {
 router.get("/resend-verification-email", async (req, res) => {
   try {
     if (req.query?.userId) {
+      console.log(req.query.userId)
+      console.log(typeof(req.query.userId))
       const user = await users.findOne({ _id: req.query.userId })
       if (!user) {
         return res
@@ -206,6 +209,7 @@ router.get("/resend-verification-email", async (req, res) => {
       }
     }
   } catch (error) {
+    console.log(error)
     return res
       .status(400)
       .json({ error: "Unable to send verification Email" });
