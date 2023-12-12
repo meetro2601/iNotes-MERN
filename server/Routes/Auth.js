@@ -124,7 +124,7 @@ router.post(
             if (err) {
               return res.status(403).send("Token generation error");
             }
-            res.cookie("iNotes_jwt", token, { httpOnly: true, secure: true });
+            res.cookie("iNotes_jwt", token, { secure: true });
             res.json({ token, user });
           });
         });
