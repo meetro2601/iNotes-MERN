@@ -26,7 +26,7 @@ router.post("/google-login", (req, res) => {
           if (err) {
             return res.status(403).send("Token generation error");
           }
-          res.cookie('iNotes_google', token, {  secure:true })
+          res.cookie('iNotes_google', token, { secure: true, httpOnly: true, sameSite: 'none' })
           res.json({ token, user });
         });
       } else {
@@ -40,7 +40,7 @@ router.post("/google-login", (req, res) => {
             if (err) {
               return res.status(403).send("Token generation error");
             }
-            res.cookie('iNotes_google', token, { secure: true })
+            res.cookie('iNotes_google', token, { secure: true, httpOnly: true, sameSite: 'none' })
             res.json({ token, user });
           })
         }
@@ -50,7 +50,8 @@ router.post("/google-login", (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      return res.status(403).send("Google sign in error")});
+      return res.status(403).send("Google sign in error")
+    });
 });
 
 export default router

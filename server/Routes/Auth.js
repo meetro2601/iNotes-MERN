@@ -124,7 +124,7 @@ router.post(
             if (err) {
               return res.status(403).send("Token generation error");
             }
-            res.cookie("iNotes_jwt", token, { secure: true });
+            res.cookie("iNotes_jwt", token, { secure: true, httpOnly: true,sameSite:'none' });
             res.json({ token, user });
           });
         });
@@ -145,7 +145,7 @@ router.post("/verify-email", verifyToken, async (req, res) => {
     const result = await users.findOneAndUpdate({ _id: req.user }, { $set: { verified: true } })
 
     if (result) {
-      await vtokens.findOneAndDelete({userId:req.user})
+      await vtokens.findOneAndDelete({ userId: req.user })
       return res.status(200).send("Verified Successfully");
     } else {
       res.status(400).send("Unable to verify");
@@ -161,7 +161,7 @@ router.get("/resend-verification-email", async (req, res) => {
   try {
     if (req.query?.userId) {
       console.log(req.query.userId)
-      console.log(typeof(req.query.userId))
+      console.log(typeof (req.query.userId))
       const user = await users.findOne({ _id: req.query.userId })
       if (!user) {
         return res
