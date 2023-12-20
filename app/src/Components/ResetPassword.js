@@ -1,6 +1,7 @@
 import { MDBBtn, MDBContainer, MDBIcon, MDBInput } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { BASE_URL } from "../App";
 
 function ResetPassword() {
  
@@ -18,7 +19,7 @@ function ResetPassword() {
 
  
   useEffect(() => {
-    fetch(`/password/verify-resetToken?userId=${user}&token=${resetToken}`, {
+    fetch(`${BASE_URL}/password/verify-resetToken?userId=${user}&token=${resetToken}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +52,7 @@ function ResetPassword() {
     } else if (password.newPassword !== password.confirmPassword) {
       setpswrdErr("Passwords do not match");
     } else {
-      fetch(`/password/reset-Password?userId=${user}&token=${resetToken}`, {
+      fetch(`${BASE_URL}/password/reset-Password?userId=${user}&token=${resetToken}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

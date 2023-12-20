@@ -1,6 +1,7 @@
 import { MDBBtn, MDBContainer, MDBIcon } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { BASE_URL } from "../App";
 
 function EmailVerified() {
   const [searchParams] = useSearchParams();
@@ -9,7 +10,7 @@ function EmailVerified() {
   const [tokenErr, settokenErr] = useState();
 
   useEffect(() => {
-    fetch(`/auth/verify-email?userId=${user}&token=${verificationToken}`, {
+    fetch(`${BASE_URL}/auth/verify-email?userId=${user}&token=${verificationToken}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +27,7 @@ function EmailVerified() {
   }, [user, verificationToken]);
 
   const resendEmail = () => {
-    fetch(`/auth/resend-verification-email?userId=${user}`, {
+    fetch(`${BASE_URL}/auth/resend-verification-email?userId=${user}`, {
       method: "GET",
     }).then(res => res.json())
     .then(data => {

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser, signInUser } from "../redux/userSlice";
+import { BASE_URL } from "../App";
 // import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 
 function Login() {
@@ -103,6 +104,7 @@ function Login() {
     } else if (formDetail.email && formDetail.password) {
       setloading(true)
       const data = await loginUser(formDetail)
+      console.log(data)
       if (data.user?.verified === true) {
         setformDetail({
           email: "",
@@ -125,7 +127,7 @@ function Login() {
   const sendNewEmail = (e) => {
     e.preventDefault()
 
-    fetch(`/auth/resend-verification-email?userId=${user._id}`, {
+    fetch(`${BASE_URL}/auth/resend-verification-email?userId=${user._id}`, {
       method: "GET",
     }).then(res => res.json())
       .then(data => {

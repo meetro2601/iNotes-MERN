@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { MDBBtn, MDBContainer, MDBInput, MDBSpinner } from "mdb-react-ui-kit";
+import { BASE_URL } from "../App";
 
 function ForgotPassword() {
   const [email, setemail] = useState("");
@@ -22,7 +23,7 @@ function ForgotPassword() {
       seterror("Email Id Required");
     } else {
       setloading(true)
-      fetch("/password/forgot-Password", {
+      fetch(`${BASE_URL}/password/forgot-Password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

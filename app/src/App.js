@@ -9,6 +9,7 @@ import EmailVerified from "./Components/EmailVerified";
 import PageError from "./Components/PageError";
 
 export const UserContext = React.createContext()
+export const BASE_URL = "https://inotes-api.onrender.com"
 
 function App() {
   

@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { BASE_URL } from "../App";
 
-export const loginUser =  async (formDetail) => {
-    const res = await fetch("/auth/login", {
+export const loginUser = async (formDetail) => {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(formDetail),
+        credentials: 'include' // should be there
     })
     const data = await res.json()
     return data
@@ -26,21 +28,21 @@ export const loginUser =  async (formDetail) => {
 // })
 
 export const logOut = async () => {
-    const res = await fetch("/auth/logout")
+    const res = await fetch(`${BASE_URL}/auth/logout`, { credentials: 'include' })
     const data = await res.json()
     return data
 }
 
-export const signUp = async (formDetail)=>{
-    const res = await fetch("/auth/signup", {
+export const signUp = async (formDetail) => {
+    const res = await fetch(`${BASE_URL}/auth/signup`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(formDetail),
-      })
-      const data = await res.json()
-      return data
+    })
+    const data = await res.json()
+    return data
 }
 
 const userSlice = createSlice({
@@ -50,10 +52,10 @@ const userSlice = createSlice({
     },
     name: "user",
     reducers: {
-        signInUser: (state,action)=>{
+        signInUser: (state, action) => {
             state.loggedIn = action.payload
         },
-        currentUser:(state,action)=>{
+        currentUser: (state, action) => {
             state.user = action.payload
         }
     },
@@ -61,7 +63,7 @@ const userSlice = createSlice({
 
 const { actions, reducer } = userSlice
 
-export const {signInUser,currentUser} = actions
+export const { signInUser, currentUser } = actions
 
 export default reducer
 

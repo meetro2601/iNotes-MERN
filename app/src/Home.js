@@ -14,6 +14,7 @@ import Note from "./Components/Note";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNotes, removeNote } from "./redux/noteSlice";
 import { currentUser, logOut, signInUser } from "./redux/userSlice";
+import { BASE_URL } from "./App";
 
 function Home() {
   // const { user, setuser, loggedIn, setloggedIn } = useContext(UserContext);
@@ -79,7 +80,7 @@ function Home() {
 
   useEffect(() => {
     setprogress(40)
-    fetch("/auth/myaccount", {
+    fetch(`${BASE_URL}/auth/myaccount`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

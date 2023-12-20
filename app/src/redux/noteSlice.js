@@ -1,4 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
+import { BASE_URL } from "../App";
 
 const initialState = {
     notes: [],
@@ -9,7 +10,7 @@ const getNotes = createAction("GET_ALL_NOTES")
 //middlewares
 export const fetchNotes = () => async (dispatch) => {
     try {
-        const res = await fetch("/notes/getallnotes", {
+        const res = await fetch(`${BASE_URL}/notes/getallnotes`, {
             method: "GET",
             /*  headers: {
                 Authorization: `Bearer ${localStorage.getItem('iNotes_user')}`,
@@ -29,7 +30,7 @@ export const fetchNotes = () => async (dispatch) => {
 
 export const addNote = (note) => async (dispatch) => {
     try {
-        const res = await fetch("/notes/addNote", {
+        const res = await fetch(`${BASE_URL}/notes/addNote`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -48,7 +49,7 @@ export const addNote = (note) => async (dispatch) => {
 
 export const removeNote = (id) => async (dispatch) => {
     try {
-        const res = await fetch(`/notes/deleteNote/${id}`, {
+        const res = await fetch(`${BASE_URL}/notes/deleteNote/${id}`, {
             method: "delete",
             /* headers: {
                 Authorization: `Bearer ${localStorage.getItem("iNotes_user")}`,
@@ -64,7 +65,7 @@ export const removeNote = (id) => async (dispatch) => {
 
 export const editNote = (note) => async (dispatch) => {
     try {
-        const res = await fetch(`/notes/updateNote/${note._id}`, {
+        const res = await fetch(`${BASE_URL}/notes/updateNote/${note._id}`, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
