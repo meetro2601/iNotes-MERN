@@ -68,7 +68,7 @@ router.post(
       ) {
 
         // console.log(
-        //   `${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}`
+        //   `${SITE_URL}/auth/user/emailVerification?user=${user._id}&verificationToken=${token}`
         // );
         /* Sending verification Email */
 
@@ -79,7 +79,7 @@ router.post(
           html: `<p>Welcome <b>${user.name},</b></p>
                 <p>Thanks for registering with iNotes.</p>
                 <p>Please confirm your email address by simply clicking on the below link</p>
-                <a style='text-decoration: none;' href='${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;font-size:24px">Verify Email</p></a>
+                <a style='text-decoration: none;' href='${SITE_URL}/auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;font-size:24px">Verify Email</p></a>
                 `,
         };
         await transporter.sendMail(mailOptions)
@@ -124,7 +124,7 @@ router.post(
             if (err) {
               return res.status(403).send("Token generation error");
             }
-            res.cookie("iNotes_jwt", token, { secure: true, httpOnly: true,sameSite:'none' });
+            res.cookie("iNotes_jwt", token, { secure: true, httpOnly: true, sameSite: 'none' });
             res.json({ token, user });
           });
         });
@@ -188,7 +188,7 @@ router.get("/resend-verification-email", async (req, res) => {
 
       if (resp.modifiedCount !== 0 || resp.upsertedCount !== 0) {
         // console.log(
-        //   `${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}`
+        //   `${SITE_URL}/auth/user/emailVerification?user=${user._id}&verificationToken=${token}`
         // );
         // return res.status(200).json({ message: "Email Sent" });
         /* ReSending verification Email */
@@ -199,7 +199,7 @@ router.get("/resend-verification-email", async (req, res) => {
           html: `<p>Welcome <b>${user.name},</b></p>
       <p>Thanks for registering with iNotes.</p>
       <p>Please confirm your email address by simply clicking on the below link</p>
-      <a style='text-decoration: none;' href='${SITE_URL}auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;font-size:24px">Verify Email</p></a>
+      <a style='text-decoration: none;' href='${SITE_URL}/auth/user/emailVerification?user=${user._id}&verificationToken=${token}'><p style="color:red;font-size:24px">Verify Email</p></a>
       `,
         };
 
@@ -229,8 +229,8 @@ router.post("/myaccount", fetchUser, (req, res) => {
 /* =================================================================== */
 
 router.get("/logout", (req, res) => {
-  res.clearCookie("iNotes_jwt");
-  res.clearCookie("iNotes_google");
+  res.clearCookie("iNotes_jwt", { secure: true, httpOnly: true, sameSite: 'none' });
+  res.clearCookie("iNotes_google", { secure: true, httpOnly: true, sameSite: 'none' });
   return res.status(200).json({ message: "Logged Out Successfully" });
 });
 

@@ -43,7 +43,7 @@ router.post(
         if (resp.modifiedCount === 0 && resp.upsertedCount === 0) {
           return res.status(500).json({ error: "Some error occured" });
         }
-        // console.log(`${SITE_URL}auth/user/resetPassword?user=${user._id}&resetToken=${token}`);
+        // console.log(`${SITE_URL}/auth/user/resetPassword?user=${user._id}&resetToken=${token}`);
         /*======= Sendign Email with Reset token ========*/
         const mailOptions = {
           from: "meetbr26@gmail.com",
@@ -51,7 +51,7 @@ router.post(
           subject: "iNotes - Reset your Password",
           html: `<p>Hi <b>${user.name},</b></p>
                     <p>Click below to reset your iNotes account password</p>
-                    <a href='${SITE_URL}auth/user/resetPassword?user=${user._id}&resetToken=${token}'><p style="display:inline-block;padding:15px;background-color:#2e4e74;border:5px solid #ffae80f7;border-radius:10px;color:white">RESET PASSWORD</p></a>
+                    <a href='${SITE_URL}/auth/user/resetPassword?user=${user._id}&resetToken=${token}'><p style="display:inline-block;padding:15px;background-color:#2e4e74;border:5px solid #ffae80f7;border-radius:10px;color:white">RESET PASSWORD</p></a>
                     <p>If you did not request a password reset, just ignore this email and continue using your existing password.</p>
                     `,
         };
