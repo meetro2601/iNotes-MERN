@@ -131,7 +131,7 @@ router.post(
       }
     } catch (error) {
       console.log(error)
-      return res.status(500).send("Server Error");
+      return res.status(500).json({ error: "Unable to Login" });
     }
   }
 );
